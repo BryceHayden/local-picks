@@ -1,3 +1,7 @@
+## Env
+
+Normally I wouldn't commit any of my .env files. But I didn't since it's easier than sharing access to a secure note in 1Password and having you create one yourself.
+
 ## Login
 
 - Username: user@notreal.com or admin@notreal.com
