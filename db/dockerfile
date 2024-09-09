@@ -1,0 +1,28 @@
+FROM postgres:16-alpine
+
+# Add the create script to the postgres entry point for docker
+ADD ./init-script.sh /docker-entrypoint-initdb.d
+RUN chmod 755 /docker-entrypoint-initdb.d/init-script.sh
+
+# Add the rest of the files to the home directory
+# ADD ./migrations/00-initialize.sql  /var/lib/postgresql/migrations
+RUN chmod 755 /var/lib/postgresql
+
+ADD ./migrations /var/lib/postgresql/migrations/
+ADD ./schema-script.sh  /var/lib/postgresql/
+ADD ./seed-script.sh  /var/lib/postgresql/
+ADD ./schemas/  /var/lib/postgresql/schemas/
+ADD ./seeds/  /var/lib/postgresql/seeds/
+
+# Ensure that windows line endings don't create a problem
+# RUN dos2unix /docker-entrypoint-initdb.d/00-initialize.sql
+# RUN dos2unix /docker-entrypoint-initdb.d/init-script.sh
+# RUN dos2unix /var/lib/postgresql/schema-script.sh
+# RUN dos2unix /var/lib/postgresql/seed-script.sh
+
+RUN chmod 755 /var/lib/postgresql/schema-script.sh
+RUN chmod 755 /var/lib/postgresql/seed-script.sh
+RUN chmod 755 /var/lib/postgresql/**/*
+# RUN chmod 755 /var/lib/postgresql/migrations/*
+# RUN chmod 755 /var/lib/postgresql/schemas/*
+# RUN chmod 755 /var/lib/postgresql/seeds/*

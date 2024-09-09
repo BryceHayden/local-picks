@@ -1,0 +1,6 @@
+-- insert into 
+-- restaurant (restaurant_id, name) values
+--     (1, 'Cafe Rio'),
+--     (2, 'Dominos '),
+--     (3, 'Taco Bell')
+-- on conflict do nothing;

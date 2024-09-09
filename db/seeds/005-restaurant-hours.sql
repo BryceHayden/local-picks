@@ -1,0 +1,7 @@
+-- insert into 
+-- restaurant_hours (restaurant_id, day_of_week, opening_time, hours_open, closing_time) values
+--     (1,   'Sun', '08:00', 4, '12:00'),
+--     (1,   'Sun', '14:00', 6, '20:00'),
+--     (2,   'Tue', '08:00', 12, '20:00'),
+--     (3,   'Thu', '08:00', 10, '18:00')
+-- on conflict do nothing;

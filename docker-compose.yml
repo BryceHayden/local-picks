@@ -1,0 +1,76 @@
+services:
+  db:
+    container_name: db
+    restart: always
+    shm_size: 128mb
+    env_file:
+      - .env
+    build:
+      context: ./db
+      dockerfile: dockerfile
+    ports:
+      - ${POSTGRES_PORT}:5432
+    networks:
+      - backend-net
+    volumes:
+      - ./db/_docker_/data:/var/lib/postgresql/data
+      # - ./db/_docker_/init:/docker-entrypoint-initdb.d
+      # - ./db/_docker_/pg:/var/lib/postgresql
+
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: dockerfile
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - ${API_PORT}:${API_PORT}
+    depends_on:
+      - db
+    volumes:
+      - ./api:/app
+    networks:
+      - backend-net
+      - frontend-net
+
+  web:
+    container_name: web
+    build:
+      context: ./web
+      dockerfile: dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./web:/app
+    restart: always
+    ports:
+      - ${WEB_PORT}:3000
+    depends_on:
+      - db
+      - api
+    networks:
+      - frontend-net
+
+  # mobile:
+# - ./web/.next:/app/.next
+# - ./web/src:/app/src
+# - ./web/public:/app/public
+#   build:
+#     context: ./mobile
+#   environment:
+#     - MOBILE_PORT=${MOBILE_PORT}
+#   volumes:
+#     - ./mobile:/app
+#   depends_on:
+#     - db
+#     - api
+#   networks:
+#     - frontend-net
+
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge
